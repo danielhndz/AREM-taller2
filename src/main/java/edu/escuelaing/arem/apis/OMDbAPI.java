@@ -56,9 +56,8 @@ public class OMDbAPI {
             // implicitly before getting the code
             int responseCode = con.getResponseCode();
             LOGGER.log(Level.INFO,
-                    "\n\tServer side\n\tGET Responde code {}\n",
+                    "\n\tServer side\n\tGET Responde code {0}\n",
                     responseCode);
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 requestsToOMDbAPI++;
                 BufferedReader in = new BufferedReader(

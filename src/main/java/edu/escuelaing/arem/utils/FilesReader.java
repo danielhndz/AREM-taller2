@@ -10,7 +10,7 @@ import java.util.Base64;
 
 public class FilesReader {
 
-    private static final String RESOURCES_DIR = "src/main/res";
+    private static final String RESOURCES_DIR = "src/main/resources";
     private static final String NOT_FOUND_PAGE = "/404/404.html";
 
     private FilesReader() {

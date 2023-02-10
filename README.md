@@ -6,17 +6,17 @@
 
 <br/>
 
-El proyecto es un servidor web que soporte múltiples solicitudes seguidas (no concurrentes). El servidor lee los archivos del disco local y retornar todos los archivos solicitados, incluyendo páginas html, archivos java script, css e imágenes. Por otro lado, tambièn es una app (servidor fachada) para consultar la información de películas de cine a través de su título. Información adicional. La app incluye comunicación asíncrona con servicios REST en el backend. Información adicional:
+El proyecto es un servidor web que soporta múltiples solicitudes seguidas (no concurrentes). El servidor lee los archivos del disco local y retorna todos los archivos solicitados, incluyendo páginas html, archivos javascript, css e imágenes. Por otro lado, también tiene una app (servidor fachada) para consultar la información de películas de cine a través de su título. La app incluye comunicación asíncrona con servicios REST en el backend. Información adicional:
 
 - Se utiliza la API gratuita de [OMDbAPI](https://www.omdbapi.com/).
 
 - Se implementa un [**Caché**](/src/main/java/edu/escuelaing/arep/cache/Cache.java) para evitar consultas repetidas a la API externa.
 
-- El [servidor](/src/main/java/edu/escuelaing/arep/server/HttpServer.java) usa un pool de hilos para atender las peticiones de manera **concurrente**.
+- El [servidor](/src/main/java/edu/escuelaing/arep/server/HttpServer.java) soporta múltiples solicitudes seguidas (**no concurrentes**).
 
 - Se utiliza un [cliente](/src/main/resources/main.js) **asíncrono** en el browser.
 
-- Se utiliza un [cliente Java](/src/main/java/edu/escuelaing/arep/client/Client.java) para probar las funciones del [servidor fachada](/src/main/java/edu/escuelaing/arep/server/HttpServer.java). El cliente utiliza simples conexiones HTTP y WebSocket para conectarse a los servicios. Este cliente se utiliza para hacer [unit testing](/src/test/java/edu/escuelaing/arep/CacheAndConcurrencyTest.java) de concurrencia en el servidor.
+- Se utiliza un [cliente Java](/src/main/java/edu/escuelaing/arep/client/Client.java) para probar las funciones del [servidor fachada](/src/main/java/edu/escuelaing/arep/server/HttpServer.java). El cliente utiliza simples conexiones HTTP y WebSocket para conectarse a los servicios. Este cliente se utiliza para hacer [unit testing](/src/test/java/edu/escuelaing/arep/CacheAndConcurrencyTest.java) en el servidor.
 
 ![diseño enunciado](../media/enunciado.png?raw=true)
 
@@ -34,7 +34,7 @@ El proyecto es un servidor web que soporte múltiples solicitudes seguidas (no c
 Simplemente clone el repositorio:
 
 ```bash
-git clone https://github.com/danielhndz/AREM-taller1.git
+git clone https://github.com/danielhndz/AREM-taller2.git
 ```
 
 Luego compile el proyecto con maven:
@@ -50,35 +50,41 @@ Si salió bien, debería tener una salida similar a esta:
 
 ### Using
 
-Para ejecutar correctamente debe estar en la carpeta raíz del proyecto. El servidor inicia por defecto con un pool de máximo 8 hilos, este valor también se puede pasar como argumento, por ejemplo 20:
+Debe estar en la carpeta raíz del proyecto para ejecutarlo correctamente.
 
 ```bash
-mvn exec:java -Dexec.mainClass="edu.escuelaing.arep.Launcher"
+mvn exec:java -Dexec.mainClass="edu.escuelaing.arem.Launcher"
 ```
 
 ![output for first use](../media/using1.png?raw=true)
 
-```bash
-mvn exec:java -Dexec.mainClass="edu.escuelaing.arep.Launcher" -Dexec.args="20"
-```
-
-![output for second use](../media/using2.png?raw=true)
-
 Ahora puede conectarse al servidor desplegado en [localhost](https://localhost:35000/):
 
-![connect from browser](../media/using3.png?raw=true)
+![connect from browser](../media/using2.png?raw=true)
 
-Y buscar cualquier título deseado:
+y acceder a la multimedia exhibida, como archivos .jpg:
 
-![search movie](../media/using4.png?raw=true)
+![using jpg](../media/using3.png?raw=true)
 
-Dado que la aplicación es **multiusuario**, si se usa una instancia en modo incógnito del browser, se puede usar el server independientemente de la primera sesión:
+archivos .png:
 
-![multiuser example](../media/using5.png?raw=true)
+![using png](../media/using4.png?raw=true)
+
+archivos .json:
+
+![using json](../media/using5.png?raw=true)
+
+o buscar cualquier título deseado:
+
+![search movie](../media/using6.png?raw=true)
+
+Si bien el server **no soporta solicitudes concurrentes**, si puede responder a múltiples solicitudes seguidas (es **multiusuario**). Si se usa una instancia en modo incógnito del browser, se puede usar el server independientemente de la primera sesión:
+
+![multiuser example](../media/using7.png?raw=true)
 
 Se puede bajar el servidor con una simple petición HTTP a [/exit](https://localhost:35000/exit):
 
-![shutdown](../media/using6.png?raw=true)
+![shutdown](../media/shutdown.png?raw=true)
 
 En el apartado de Unit testing se demuestra el funcionamiento de la memoria caché y la concurrencia.
 
